@@ -47,7 +47,7 @@ The Honeynet is the environment where the simulated attack will take place, even
 
 There are 2 VMs within the same Virtual Network and Subnet - one Windows and Linux. They both have Network Security Groups (NSGs) enabled, allowing only certain IP addresses to pass. <br>
 Microsoft Monitoring Agent (MMA) have been enabled for both of them so that Security Logs can be sent and ingested by LAW.
-As I wanted to have an easier time simulating bruce force attempts for detection from my SOC, I had modified the Account Lockout Threshold policy within my Windows VM to never lock the accounts, and modified #MaxAuthTries in the sshd_config file within my Linux VM to allow for a large number of invalid signin attempts.
+As I wanted to have an easier time simulating bruce force attempts for detection from my SOC, I had modified the Account Lockout Threshold policy within my Windows VM to never lock the accounts, and modified MaxAuthTries in the sshd_config file within my Linux VM to allow for a large number of invalid signin attempts.
 <br>
 Within the Azure environment, a Key Vault with a Secret was setup containing the password to access the local Windows VM admin account. Tenant Level logging is enabled for view all the Sign in events from Azure AD user accounts (currently renamed Entra ID). Subscription / Resource Group Level logging is enabled to view Activity Logs, which allows me to view Control-Plane events, such as CRUD operations on resources (e.g. deleting a VM or modifying a NSG rule). Finally, Resource level logging is enabled to view Data Plane events such as captured VM security event logs (e.g. turning off Windows Firewall), or events related accessing the Key Vault secrets.
 
@@ -76,10 +76,27 @@ To faciliate with the attack, I had created Powershell scripts to turn off the W
 <i>Attack Scripts:</i> https://github.com/Edwinccn/Azure-SOC-Lab/tree/main/Attack%20Scripts 
 <br>
 After step 4 where I exposed both VMs by making their NSGs insecure, the VMs were vulnerable to Live attacks externally.
+<br>
+
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/38d42b9b-6e54-4c2e-bf32-8a8e0dcde910)
+
 
 
 ## Exposing to Live Traffic
-s
+
+With the NSGs made ineffective, and Windows firewall turned off, both my Windows and Linux VMs were more vulnerable to attacks. During the 12 hours, I saw a spike in the number of Alerts detecting Brute Force attempts to both my VMs from various IP addresses all over the world. No other type of Alerts that I created were found during this time.
+
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/f4609c30-3f4a-457e-8437-7ee15439feda)
+
+<br>
+A quick ping test on Linux VM revaled that it was indeed open, whereas previously it could not be found with the NSG filtering out IP addresses for inbound traffic. A further Nmap test showed that SSH (port 22) was wide open as intended.
+
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/681522ff-dad3-480c-85e0-12f6e9d77bf7)
+
+
+
+
+
 
 ## Security Incident Response (NIST 800-61)
 s
