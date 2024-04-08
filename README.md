@@ -72,7 +72,10 @@ The Attack Vector is as follows: <br>
   <li>Brute force Linux VM. Suceed signing on 11th attempt</li>
 </ol>
 To faciliate with the attack, I had created Powershell scripts to turn off the Windows Defender Firewall (executed within Windows VM), to generate fake malware EICAR files (executed within Windows VM), to fail SSH login to Linx VM admin account (executed within Attack VM). <br>
-You may find the Attack Scripts at: https://github.com/Edwinccn/Azure-SOC-Lab/tree/main/Attack%20Scripts 
+<br>
+<i>Attack Scripts:</i> https://github.com/Edwinccn/Azure-SOC-Lab/tree/main/Attack%20Scripts 
+<br>
+After step 4 where I exposed both VMs by making their NSGs insecure, the VMs were vulnerable to Live attacks externally.
 
 
 ## Exposing to Live Traffic
