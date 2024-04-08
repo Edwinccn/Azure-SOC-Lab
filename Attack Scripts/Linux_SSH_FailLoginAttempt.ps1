@@ -1,3 +1,11 @@
+<#
+NOTE: To use the SSH cmdlets, the Posh-SSH Module is needed. Use the following commands to install onto your environment
+
+Install-Module -Name Posh-SSH -Repository PSGallery -Force
+Import-Module Posh-SSH
+Get-Command -Module Posh-SSH //to verify
+#>
+
 Import-Module -Name SSHUtils
 $ServerIPAddress = "1.0.0.0" #IPAddress of host to connect to
 $username = "USERACCOUNT" #Name of account to login as
