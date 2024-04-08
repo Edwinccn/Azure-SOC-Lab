@@ -17,6 +17,8 @@ In this project, I used Microsoft Azure to build a Honeynet and Security Operati
 <li>To build a honeynet and examine live attack attempts and traffic</li>
 <br>
 
+You can find within my respository, the scripts I created to simulate the attacks, the Alerts (KQL and JSON) to detect particular attacks, and the JSON file to display the World Map displaying the geolocation of the cities where the attacks are coming from.
+
 
 ## SOC Components
 The main components of my Azure based SOC are as follows:
@@ -26,6 +28,9 @@ The main components of my Azure based SOC are as follows:
 <br>
 <li><b>Microsoft Defender for Cloud:</b> Further analyzes logs from LAW and environment to provide Threat Intelligence to the Incidents generated from Sentinel. It also analyzes the environment and provides recommendations to further improve the overall security posture / score as according Compliance plans selected (ie.NIST 800-63) </li>
 <br>
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/b299f194-342b-48ae-a8bb-f17b241c1457)
+
+
 
 ## Setup
 There are two main parts to the setup - the Honeynet Environment and the SOC
