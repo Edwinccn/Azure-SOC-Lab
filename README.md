@@ -6,7 +6,7 @@
 
 ## Introduction
 
-In the project, I use Microsoft Azure to build a Honeynet and Security Operations Center (SOC). I then simulate an attack on the resources within Cloud system and Honeynet, and expose the VMs for 12 hours for which I document the security metrics. After analyzing, containing, eradicating the security incidents generated from my Cloud based SIEM, and recovering the systems, I further harden the system. The system is monitored for another 12 hours and measured again to see the effectiveness of the improvements.
+In this project, I used Microsoft Azure to build a Honeynet and Security Operations Center (SOC). I then simulated an attack on the resources within my environment, and exposed the VMs for 12 hours. Security metrics such as number of Windows Event Logs or number of Linux Syslogs were measured. After analyzing, containing, and eradicating the security incidents generated from my Cloud based SIEM, and recovering the environment, I further hardened the environment. The system is monitored for another 12 hours and measured again to validate the effectiveness of the improvements.
 
 
 <b>Purpose of my Lab is as follows:</b>
@@ -18,11 +18,25 @@ In the project, I use Microsoft Azure to build a Honeynet and Security Operation
 <br>
 
 
-## Architecture and Components
-s
+## SOC Components
+The main components of my Azure based SOC are as follows:
+<li> <b>Log Analytics Workspace (LAW):</b> Ingest logs from resources such as VMs, Key Vaults, Activity Logs and store them for analysis using Kusto Query Language (KQL)</li>
+<br>
+<li><b>Microsoft Sentinel:</b> This will be the SIEM which monitors and periodically queries LAW to generate alerts based on security events. Same instances of the alerts within the same period are grouped into Incidents. Two maps are also created to visualize geographically the IP addresses responsible for the security events </li>
+<br>
+<li><b>Microsoft Defender for Cloud:</b> Further analyzes logs from LAW and environment to provide Threat Intelligence to the Incidents generated from Sentinel. It also analyzes the environment and provides recommendations to further improve the overall security posture / score as according Compliance plans selected (ie.NIST 800-63) </li>
+<br>
 
 ## Setup
-s
+There are two main parts to the setup - the Honeynet Environment and the SOC
+
+Honeynet: 
+<br>
+There are 2 VMs within the same Virtual Network and Subnet - one Windows and Linux. They both have Network Security Groups (NSGs) enabled, allowing only certain IP addresses to access. <br>
+Microsoft Monitoring Agent (MMA) have been enabled for both of them so that Security Logs can be sent and ingested by LAW.
+As I wanted to have an easier time simulating bruce force attempts for detection from my SOC, I had modified the Account Lockout Threshold policy within my Windows VM to never lock the accounts, and modified #MaxAuthTries in the sshd_config file within my Linux VM to allow for a large number of invalid signin attempts.
+<br>
+Within the Azure environment
 
 ## Attack Simulation
 s
