@@ -1,0 +1,9 @@
+let FromTime = datetime(2024-01-30T06:30:00); //change the date and time in YYYY-MM-DDTHH:MM:SS
+let TillTime = datetime(2024-01-30T18:30:00); //chage the date and time (ie.12 hours later)
+let IPtoGeoDB = _GetWatchlist("IPtoGeoList");
+SecurityEvent
+| where EventID == 4625
+| where TimeGenerated >= FromTime and TimeGenerated <= TillTime
+| evaluate ipv4_lookup(IPtoGeoDB, IpAddress, network)
+| project TimeGenerated, Account, AccountType, Computer, EventID, Activity, IpAddress, LogonTypeName, network, latitude, longitude, city = cityname, country = countryname, friendly_location = strcat(cityname, " (", countryname, ")");
+
