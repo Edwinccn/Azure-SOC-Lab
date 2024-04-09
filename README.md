@@ -160,17 +160,37 @@ For Permissions management, I had removed the Global Administrator role from's i
 
 The Key Vault itself was also compromised. By segregating duties to another user responsible for VM management, this will reduce Single Point of Failure. An alert was setup in Sentinel so that I will be notified everytime this particular account was signed in.
 
-In addition, Microsoft Defender for Cloud was able to find additional vulnerabilities with my Key Vault setup. Although not related to the Security Incident, I found these recommendations useful. For example, it suggested that the Firewall should be enabled on Key Vault. Inspired by this, I setup a Private Endpoint on my Key Vault instance, and added a new NSG to the Subnet of my Virtual Network that contains my VMs, KeyVault, and Storage Account
+In addition, Microsoft Defender for Cloud was able to find additional vulnerabilities with my Key Vault setup. Although not related to the Security Incident, I found these recommendations useful. For example, it suggested that the Firewall should be enabled on Key Vault. Inspired by this, I setup a Private Endpoint on my Key Vault instance, and added a new NSG to the Subnet of my Virtual Network that contains my VMs, KeyVault, and Storage Account. The Private Endpoint was verified when I found that the FQDN associated with it had an internal IP address rather than a public one.
 
 ![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/701b4ae0-7062-4629-9160-0d01645f4f87)
 
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/7219eb79-bc99-49a0-948a-35c34aab1b1d)
+
+
 Finally, Microsoft Key Defender also has Compliance recommendation plans which I can select from various standards and use as baseline to measure the Security Posture of my environment, such as NIST SP 800-53 or ISO 27001. This is useful if your environment needs to comply with these standards as part of Regulatory Compliance. However, at the time writing, I was made aware that these recommendations take a significant amount of time (around 1-2 days) to appear in the Azure environment after being selected. This is perhaps due to the large amounts of scanning that it does on the environment to find which items have had their requirements met, and which have not.
 
-## Before and After
+## Security Metrics
 
+Right after the attack and the VMs were exposed to the public, I documented the following security metrics to see the extent of logs gathered. Some of them were generated from my own Attack VM
+
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/3664eb64-e5f1-44b1-b77c-62bd5ee97cbb)
+
+<b>Windows Failed Auth Signin Attempts - Geolocations of Attacker IPs</b>
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/1b52b071-a035-482f-a89d-d6fa550271cf)
+
+<b>Linux Failed Auth SSH Attempts - Geolocations of Attacker IPs</b>
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/153a9661-9e6d-4978-9a22-0d15345598a9)
+
+After resolving the incidents and securing the environment, I let the VMs run again for 12 hours and documented another instance of the security metrics
+
+![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/0b66c0b0-9179-47a8-9751-fc38fef1f176)
+
+No maps were generated as there were no Windows nor Linux Auth Signin Failures.
+<br>
+Note: the tables measure the number of Security Event and Syslogs where as the Maps are more specific in that they look for EventID 4625 (indicative of failed attempt to login to the machine or Syslog auth failure with text "Failed password")
 
 ## Conclusion
-s
+
 
 
 
