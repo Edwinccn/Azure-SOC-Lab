@@ -16,6 +16,9 @@ In this project, I used Microsoft Azure to build a Honeynet and Security Operati
 <li>To build a honeynet and examine live attack attempts and traffic</li>
 <br>
 
+Rather than using Virtual Box on my local machine to simulate this, I chose Azure as I wanted to multiple VMs to run continuously for 12+ hours multiple times, and also to explore the features provided in Azure.
+<br>
+
 You can find within my respository, the scripts I created to simulate the attacks, the Alerts (KQL and JSON) to detect particular attacks, and the JSON file to display the World Map displaying the geolocation of the cities where the attacks are coming from.
 
 
@@ -171,7 +174,7 @@ Finally, Microsoft Key Defender also has Compliance recommendation plans which I
 
 ## Security Metrics
 
-Right after the attack and the VMs were exposed to the public, I documented the following security metrics to see the extent of logs gathered. Some of them were generated from my own Attack VM
+Right after the attack and the VMs were exposed to the public, I documented the following security metrics to see the extent of logs gathered. Some of them were generated from my own Attack VM. A large portion of the attacks came from the Asia and North America region, although other regions were also involved such as Europe or Latin America. It is also interesting to see that there were more Windows security events than Linux, which is indicative that Windows is a more targeted platform!
 
 ![image](https://github.com/Edwinccn/Azure-SOC-Lab/assets/162117956/3664eb64-e5f1-44b1-b77c-62bd5ee97cbb)
 
@@ -187,10 +190,14 @@ After resolving the incidents and securing the environment, I let the VMs run ag
 
 No maps were generated as there were no Windows nor Linux Auth Signin Failures.
 <br>
-Note: the tables measure the number of Security Event and Syslogs where as the Maps are more specific in that they look for EventID 4625 (indicative of failed attempt to login to the machine or Syslog auth failure with text "Failed password")
+Note: the tables measure the number of Security Event and Syslogs where as the Maps are more specific in that they look for EventID 4625 (indicative of failed attempt to login to the machine) or Syslog auth failure with text "Failed password".
 
 ## Conclusion
 
-
+The lab provided a valuable learning experience. I got to explore Azure Cloud, in particular, Log Analytics Workspace, Microsoft Defender for Cloud, and Microsoft Sentinel, which I used to build my SOC. These features provided invaluable insights into both a simulated attack allowing easier tracking of the attack vector, and also into live traffic attacks into my Honeynet.
+<br>
+Although there were many powerful features that can be utilized in Azure, these do come at a cost and requires a little experimentation and practice to get used to. There were a few instances where the performance were not up to expectation, such as the logs arriving into Log Analytics 5-10 minutes later, which allows for a slower response time from the SOC in the event of critical and time sensitive incidents. Fortunately, Azure does provide free credits when you sign up for a new user account to try.
+<br>
+All in all, this was fun and practical to setup! I recommend everyone to give this type of lab a try if they are interested in using Cloud to simulate a SOC and Honeynet.
 
 
