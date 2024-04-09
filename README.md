@@ -171,6 +171,7 @@ In addition, Microsoft Defender for Cloud was able to find additional vulnerabil
 
 <b>Microsoft Defender Compliance Recommendations</b>
 <br>
+<br>
 Finally, Microsoft Key Defender also has Compliance recommendation plans which I can select from various standards and use as baseline to measure the Security Posture of my environment, such as NIST SP 800-53 or ISO 27001. This is useful if your environment needs to comply with these standards as part of Regulatory Compliance. However, at the time writing, I was made aware that these recommendations take a significant amount of time (around 1-2 days) to appear in the Azure environment after being selected. This is perhaps due to the large amounts of scanning that it does on the environment to find which items have had their requirements met, and which have not.
 
 ## Security Metrics
