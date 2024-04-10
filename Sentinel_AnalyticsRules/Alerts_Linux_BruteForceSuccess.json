@@ -1,0 +1,81 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/dbab268c-6906-4e22-a632-8fe263025f2b')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/dbab268c-6906-4e22-a632-8fe263025f2b')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2023-12-01-preview",
+            "properties": {
+                "displayName": "Linux - Brute Force SUCCESS",
+                "description": "",
+                "severity": "High",
+                "enabled": true,
+                "query": "let TimeAgo = 5m;\nlet REGEX_IPAddress = @\"\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b\";\nlet LogonFail = Syslog\n| where Facility == \"auth\"\n| where SyslogMessage startswith \"Failed password\"\n| where TimeGenerated > ago(TimeAgo)\n| summarize FailureCount = count() by AttackerIP = extract(REGEX_IPAddress, 0, SyslogMessage), DestinationHost = HostName\n| where FailureCount >= 5;\nlet LogonSuccess = Syslog\n| where Facility == \"auth\"\n| where SyslogMessage startswith \"Accepted password\"\n| where TimeGenerated > ago(TimeAgo)\n| summarize SuccessfulCount = count() by SuccessLogonTime = TimeGenerated, AttackerIP = extract(REGEX_IPAddress, 0, SyslogMessage), DestinationHost = HostName\n| where SuccessfulCount >= 1;\nlet BruteForceSuccesses = LogonSuccess \n| join kind = inner LogonFail on AttackerIP, DestinationHost;\nBruteForceSuccesses",
+                "queryFrequency": "PT5M",
+                "queryPeriod": "PT1H",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "startTimeUtc": null,
+                "tactics": [
+                    "CredentialAccess"
+                ],
+                "techniques": [
+                    "T1110"
+                ],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": true,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT1H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "AlertPerResult"
+                },
+                "alertDetailsOverride": {
+                    "alertDynamicProperties": []
+                },
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "IP",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Address",
+                                "columnName": "AttackerIP"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "DestinationHost"
+                            }
+                        ]
+                    }
+                ],
+                "sentinelEntitiesMappings": null,
+                "templateVersion": null,
+                "subTechniques": []
+            }
+        }
+    ]
+}
